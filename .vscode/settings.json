@@ -25,5 +25,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "files.exclude": {
+    "**/.vscode": true,
+    "**/.next": true,
+    "**/node_modules": true,
+    "next-env.d.ts": true
+  }
 }
