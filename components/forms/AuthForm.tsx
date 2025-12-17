@@ -10,7 +10,6 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { toast } from "sonner";
 import { z, ZodType } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -28,6 +27,7 @@ import ROUTES from "@/constants/routes";
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
+  onSubmit: (data: T) => Promise<{ success: boolean }>;
   formType: "SIGN_IN" | "SIGN_UP";
 }
 
@@ -35,6 +35,7 @@ const AuthForm = <T extends FieldValues>({
   schema,
   defaultValues,
   formType,
+  onSubmit,
 }: AuthFormProps<T>) => {
   const router = useRouter();
 
