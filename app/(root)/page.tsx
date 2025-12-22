@@ -1,9 +1,15 @@
 import Link from "next/link";
 
+import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 
-const page = async () => {
+interface SearchParams {
+  searchParams: Promise<{ [key: string]: string }>;
+}
+
+const Home = async ({ searchParams }: SearchParams) => {
+  const { query = "" } = await searchParams;
   return (
     <>
       <section className="flex w-full flex-col-reverse sm:flex-row justify-between gap-4 sm:items-center">
@@ -15,7 +21,14 @@ const page = async () => {
           <Link href={ROUTES.ASK_QUESTION}>Ask a question</Link>
         </Button>
       </section>
-      <section className="mt-11">LocalSearch</section>
+      <section className="mt-11">
+        <LocalSearch
+          route="/"
+          imgSrc="/icons/search.svg"
+          placeholder="Search questions..."
+          otherClasses="flex-1"
+        />
+      </section>
       Homefilter
       <div className="mt-10 flex w-full flex-col gap-6">
         <p>Question Card 1</p>
@@ -27,4 +40,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Home;
