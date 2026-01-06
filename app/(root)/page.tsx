@@ -5,6 +5,8 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import handleError from "@/lib/handlers/error";
+import dbConnect from "@/lib/mongoose";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -85,8 +87,20 @@ const filteredQuestions = [
   },
 ];
 
+const test = async () => {
+  try {
+    throw new Error("Test error");
+    await dbConnect();
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 const Home = async ({ searchParams }: SearchParams) => {
+  await test();
+
   const { query = "" } = await searchParams;
+
   return (
     <>
       <section className="flex w-full flex-col-reverse sm:flex-row justify-between gap-4 sm:items-center">

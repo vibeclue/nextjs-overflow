@@ -44,7 +44,13 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      router.push(formType === "SIGN_IN" ? ROUTES.HOME : ROUTES.SIGN_IN);
+    }
+  };
 
   const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
 
@@ -82,11 +88,11 @@ const AuthForm = <T extends FieldValues>({
 
         <Button
           disabled={form.formState.isSubmitting}
-          className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
+          className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter text-light-900!"
         >
           {form.formState.isSubmitting
             ? buttonText === "Sign In"
-              ? "Signin In..."
+              ? "Signing In..."
               : "Signing Up..."
             : buttonText}
         </Button>

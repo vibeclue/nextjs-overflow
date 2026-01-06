@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +20,11 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
 
-  const [searchQuery, setSearchQuery] = useState(query); // query это то что будет отображаться в url когда юзер нажмет на энтер в строке поиска: http://localhost:3000/?query=chto-to%20tut%20eshetsia
+  const [searchQuery, setSearchQuery] = useState(query);
+
+  useEffect(() => {
+    setSearchQuery(query);
+  }, [query]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -31,7 +34,6 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
           key: "query",
           value: searchQuery,
         });
-
         router.push(newUrl, { scroll: false });
       } else {
         if (pathname === route) {
@@ -39,18 +41,17 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
             params: searchParams.toString(),
             keysToRemove: ["query"],
           });
-
           router.push(newUrl, { scroll: false });
         }
       }
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, router, route, searchParams, pathname]);
+  }, [searchQuery, route, pathname]); // без searchParams и router
 
   return (
     <div
-      className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
+      className={`background-light800_darkgradient flex min-h-14 grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
     >
       <Image
         src={imgSrc}
@@ -66,7 +67,7 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
         onChange={(e) => {
           setSearchQuery(e.target.value);
         }}
-        className="paragraph-regular no-focus placeholder text-dark400_light700  border-none shadow-none outline-none"
+        className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
       />
     </div>
   );
