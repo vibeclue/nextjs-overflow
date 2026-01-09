@@ -33,6 +33,7 @@ const dbConnect = async (): Promise<Mongoose> => {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         dbName: "devflow",
+        family: 4, // 👈 Добавьте эту строку для IPv4
       })
       .then((result) => {
         logger.info("Connected to MongoDB");
