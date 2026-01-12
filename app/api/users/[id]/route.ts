@@ -65,7 +65,7 @@ export async function PUT(
       new: true,
     });
 
-    if (!updatedUser) throw new NotFoundError("Error");
+    if (!updatedUser) throw new NotFoundError("User");
 
     return NextResponse.json(
       { success: true, data: updatedUser },
