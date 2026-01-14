@@ -5,6 +5,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { api } from "@/lib/api";
 import handleError from "@/lib/handlers/error";
 import dbConnect from "@/lib/mongoose";
 
@@ -89,15 +90,16 @@ const filteredQuestions = [
 
 const test = async () => {
   try {
-    throw new Error("Test error");
-    await dbConnect();
+    return await api.users.getAll();
   } catch (error) {
     return handleError(error);
   }
 };
 
 const Home = async ({ searchParams }: SearchParams) => {
-  await test();
+  const users = await test();
+  console.log("123");
+  console.log(users);
 
   const { query = "" } = await searchParams;
 
