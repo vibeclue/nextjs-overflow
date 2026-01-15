@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { NextResponse } from "next/server";
 import slugify from "slugify";
 
 import Account from "@/database/account.model";
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
       await Account.create(
         [
           {
-            userid: existingUser._id,
+            userId: existingUser._id,
             name,
             image,
             provider,
@@ -75,8 +76,9 @@ export async function POST(request: Request) {
         { session }
       );
     }
-
     await session.commitTransaction();
+
+    return NextResponse.json({ success: true });
   } catch (error: unknown) {
     await session.abortTransaction();
     return handleError(error, "api");
