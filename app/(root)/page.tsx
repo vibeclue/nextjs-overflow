@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -88,18 +89,9 @@ const filteredQuestions = [
   },
 ];
 
-const test = async () => {
-  try {
-    return await api.users.getAll();
-  } catch (error) {
-    return handleError(error);
-  }
-};
-
 const Home = async ({ searchParams }: SearchParams) => {
-  const users = await test();
-  console.log("123");
-  console.log(users);
+  const session = await auth();
+  console.log("Session: ", session);
 
   const { query = "" } = await searchParams;
 
