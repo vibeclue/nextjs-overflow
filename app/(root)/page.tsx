@@ -6,9 +6,6 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
-import { api } from "@/lib/api";
-import handleError from "@/lib/handlers/error";
-import dbConnect from "@/lib/mongoose";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -91,7 +88,6 @@ const filteredQuestions = [
 
 const Home = async ({ searchParams }: SearchParams) => {
   const session = await auth();
-  console.log("Session: ", session);
 
   const { query = "" } = await searchParams;
 
