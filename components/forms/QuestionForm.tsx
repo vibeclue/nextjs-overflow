@@ -13,7 +13,6 @@ import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validations";
-import { Question } from "@/types/global";
 
 import TagCard from "../cards/TagCard";
 import { Button } from "../ui/button";
@@ -35,7 +34,7 @@ const Editor = dynamic(() => import("@/components/editor"), {
 });
 
 interface Params {
-  question?: Question;
+  question?: Types.Question;
   isEdit?: boolean;
 }
 
