@@ -78,7 +78,11 @@ export const getTags = async (
 export const getTagQuestions = async (
   params: GetTagQuestionsParams
 ): Promise<
-  Types.ActionResponse<{ tag: Tag; questions: Question[]; isNext: boolean }>
+  Types.ActionResponse<{
+    tag: Types.Tag;
+    questions: Types.Question[];
+    isNext: boolean;
+  }>
 > => {
   const validationResult = await action({
     params,
@@ -86,7 +90,7 @@ export const getTagQuestions = async (
   });
 
   if (validationResult instanceof Error) {
-    return handleError(validationResult) as ErrorResponse;
+    return handleError(validationResult) as Types.ErrorResponse;
   }
 
   const { tagId, page = 1, pageSize = 10, query } = params;
@@ -127,5 +131,7 @@ export const getTagQuestions = async (
         isNext,
       },
     };
-  } catch (error) {}
+  } catch (error) {
+    return handleError(error) as Types.ErrorResponse;
+  }
 };
