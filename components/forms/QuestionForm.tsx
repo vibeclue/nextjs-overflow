@@ -5,7 +5,7 @@ import { MDXEditorMethods } from "@mdxeditor/editor";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useRef, useTransition } from "react";
+import React, { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -27,9 +27,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
-// This is the only place InitializedMDXEditor is imported directly.
 const Editor = dynamic(() => import("@/components/editor"), {
-  // Make sure we turn SSR off
   ssr: false,
 });
 
@@ -43,7 +41,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
   const editorRef = useRef<MDXEditorMethods>(null);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
       title: question?.title || "",
@@ -56,6 +54,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
     e: React.KeyboardEvent<HTMLInputElement>,
     field: { value: string[] }
   ) => {
+    console.log(field, e);
     if (e.key === "Enter") {
       e.preventDefault();
       const tagInput = e.currentTarget.value.trim();
@@ -67,7 +66,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
       } else if (tagInput.length > 15) {
         form.setError("tags", {
           type: "manual",
-          message: "Tag should be less than 15 characters.",
+          message: "Tag should be less than 15 characters",
         });
       } else if (field.value.includes(tagInput)) {
         form.setError("tags", {
@@ -155,13 +154,13 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
                   {...field}
                 />
               </FormControl>
-              <FormDescription className="body-regular text-light-500 mt-2.5">
-                Be specific and imagine that you are asking a question to
-                another person.
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Be specific and imagine you&apos;re asking a question to another
+                person.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -183,7 +182,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
                   fieldChange={field.onChange}
                 />
               </FormControl>
-              <FormDescription className="body-regular text-light-500 mt-2.5">
+              <FormDescription className="body-regular mt-2.5 text-light-500">
                 Introduce the problem and expand on what you&apos;ve put in the
                 title.
               </FormDescription>
@@ -202,13 +201,13 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
               <FormControl>
                 <div>
                   <Input
-                    className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
+                    className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
                     placeholder="Add tags..."
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
                   {field.value.length > 0 && (
                     <div className="flex-start mt-2.5 flex-wrap gap-2.5">
-                      {field.value.map((tag: string) => (
+                      {field?.value?.map((tag: string) => (
                         <TagCard
                           key={tag}
                           _id={tag}
@@ -223,7 +222,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
                   )}
                 </div>
               </FormControl>
-              <FormDescription className="body-regular text-light-500 mt-2.5">
+              <FormDescription className="body-regular mt-2.5 text-light-500">
                 Add up to 3 tags to describe what your question is about. You
                 need to press enter to add a tag.
               </FormDescription>
@@ -231,11 +230,12 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
             </FormItem>
           )}
         />
+
         <div className="mt-16 flex justify-end">
           <Button
             type="submit"
             disabled={isPending}
-            className="cursor-pointer primary-gradient w-fit text-light-900!"
+            className="primary-gradient w-fit text-light-900!"
           >
             {isPending ? (
               <>

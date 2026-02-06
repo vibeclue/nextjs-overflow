@@ -11,6 +11,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { z, ZodType } from "zod";
+import { Schema } from "zod/v3";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,12 +25,11 @@ import {
 import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
-import { ActionResponse } from "@/types/global";
 
 interface AuthFormProps<T extends FieldValues> {
-  schema: ZodType<T>;
+  schema: z.ZodType<T>;
   defaultValues: T;
-  onSubmit: (data: T) => Promise<ActionResponse>;
+  onSubmit: (data: T) => Promise<Types.ActionResponse>;
   formType: "SIGN_IN" | "SIGN_UP";
 }
 
@@ -47,7 +47,7 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async (data) => {
-    const result = (await onSubmit(data)) as ActionResponse;
+    const result = (await onSubmit(data)) as Types.ActionResponse;
 
     if (result?.success) {
       toast({
@@ -104,11 +104,11 @@ const AuthForm = <T extends FieldValues>({
 
         <Button
           disabled={form.formState.isSubmitting}
-          className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
+          className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter text-light-900!"
         >
           {form.formState.isSubmitting
             ? buttonText === "Sign In"
-              ? "Signin In..."
+              ? "Signing In..."
               : "Signing Up..."
             : buttonText}
         </Button>
