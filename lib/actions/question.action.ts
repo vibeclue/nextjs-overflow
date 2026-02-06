@@ -30,7 +30,7 @@ export async function createQuestion(
   }
 
   const { title, content, tags } = validationResult.params!;
-  const userId = validationResult?.session?.user?.id;
+  const userId = validationResult.session?.user?.id;
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -41,7 +41,7 @@ export async function createQuestion(
       { session }
     );
 
-    if (!question) throw new Error("Failed to create question");
+    if (!question) throw new Error("Failed to create the question");
 
     const tagIds: mongoose.Types.ObjectId[] = [];
     const tagQuestionDocuments = [];
