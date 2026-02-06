@@ -1,3 +1,4 @@
+import { Author } from "next/dist/lib/metadata/types/metadata-types";
 import { NextResponse } from "next/server";
 
 declare global {
@@ -55,6 +56,13 @@ declare global {
       query?: string;
       filter?: string;
       sort?: string;
+    }
+
+    interface Answer {
+      _id: string;
+      author: Author;
+      content: string;
+      createdAt: Date;
     }
   }
 }
